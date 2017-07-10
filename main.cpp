@@ -1,3 +1,12 @@
+/* SCOTS GUI Main code
+ *
+ * Created by: Aneesh Dahiya
+ *
+ * 10/July/2017
+ *
+ */
+
+
 #include "mainwindow.h"
 #include <QApplication>
 

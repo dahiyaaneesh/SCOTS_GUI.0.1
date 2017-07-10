@@ -1,3 +1,9 @@
+/* SCOTS GUI Dialog for new model and about code
+ * Contains the definition of all the functions used in the new_model_dialog class
+ * Created by: Aneesh Dahiya
+ * 10/July/2017
+ */
+
 #include "new_model_dialog.h"
 #include "ui_new_model_dialog.h"
 #include"mainwindow.h"

@@ -1,3 +1,11 @@
+/* SCOTS GUI Maniwindow code
+ * Contains the definition of all the functions used in the Mainwindow class
+ * Created by: Aneesh Dahiya
+ * 10/July/2017
+ */
+
+
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include<fstream>
@@ -475,6 +483,7 @@ void MainWindow::bddcode()
             }
         }
        file<<"   };"<<std::endl;
+       file<<"  scots::SymbolicSet set;"<<std::endl;
        file<<"auto avoid = [&H,ss_pre](const abs_type& idx) {"<<std::endl
            <<"state_type x;"<<std::endl
            <<"ss_pre.itox(idx,x);"<<std::endl
@@ -1561,7 +1570,7 @@ void MainWindow::makefile()
               std::string path1="/"+path;
                path1.append("/");
                path1.append("Makefile");
-               std::ofstream file1 (path1);
+               std::ofstream file1 (path1.c_str());
                   if(file1.is_open())
                      {
                         file1<<"#"<<std::endl
@@ -1876,8 +1885,8 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
     //condition for open model functionality.
     if(this->new_model->flag_filename_entered==1)
        {
-
-        std::ifstream file_state("/"+this->new_model->pathoffolder+"/state_param.txt");
+        std::string temp="/"+this->new_model->pathoffolder+"/state_param.txt";
+        std::ifstream file_state(temp.c_str());
         if(file_state.is_open())
         {   QString state_param ,eta="",ub="",lb="";
             int i=0;
@@ -1910,7 +1919,8 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
             ui->textBrowser_status->setText("Couldn't add state parameters.");
 
         //Adding input parameters.
-        std::ifstream file_input("/"+this->new_model->pathoffolder+"/input_param.txt");
+        temp="/"+this->new_model->pathoffolder+"/input_param.txt";
+        std::ifstream file_input(temp.c_str());
         if(file_input.is_open())
         {   QString input_param ,eta="",ub="",lb="";
             int i=0;
@@ -1941,7 +1951,8 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
         else
             ui->textBrowser_status->append("Couldn't add input parameters.");
        // Adding Radius Post
-        std::ifstream file_rad("/"+this->new_model->pathoffolder+"/rad_post.txt");
+        temp="/"+this->new_model->pathoffolder+"/rad_post.txt";
+        std::ifstream file_rad(temp.c_str());
         if(file_rad.is_open())
         {   QString rad_post;
 
@@ -1958,7 +1969,8 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
             ui->textBrowser_status->append("couldn't add radius post ");
 
       //Adding System post
-        std::ifstream file_sys("/"+this->new_model->pathoffolder+"/sys_post.txt");
+        temp="/"+this->new_model->pathoffolder+"/sys_post.txt";
+        std::ifstream file_sys(temp.c_str());
         if(file_sys.is_open())
         {   QString sys_post;
 

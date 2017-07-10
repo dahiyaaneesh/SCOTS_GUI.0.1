@@ -34,6 +34,9 @@
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background : url(:/Res/background_gui.jpg)</string>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
@@ -69,6 +72,9 @@
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background - color : rgb(252, 233, 79)</string>
          </property>
          <column>
           <property name="text">
@@ -143,7 +149,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="currentIndex">
-          <number>6</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1444,17 +1450,6 @@ p, li { white-space: pre-wrap; }
             </rect>
            </property>
           </widget>
-          <zorder>pushButton</zorder>
-          <zorder>pushButton_compileandrun</zorder>
-          <zorder>checkBox_add_safety</zorder>
-          <zorder>checkBox_add_target</zorder>
-          <zorder>checkBox_add_avoid</zorder>
-          <zorder>checkBox_add_simulation</zorder>
-          <zorder>label_15</zorder>
-          <zorder>radioButton_BDD</zorder>
-          <zorder>radioButton_sparse</zorder>
-          <zorder>lineEdit_sim_statrting_point</zorder>
-          <zorder>treeWidget_newmodel</zorder>
          </widget>
          <widget class="QWidget" name="page_9">
           <layout class="QVBoxLayout" name="verticalLayout_23">
@@ -1507,6 +1502,9 @@ p, li { white-space: pre-wrap; }
                </item>
                <item>
                 <widget class="QPushButton" name="pushButton_2">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(211, 215, 207);</string>
+                 </property>
                  <property name="text">
                   <string>Click here</string>
                  </property>
@@ -1742,6 +1740,19 @@ p, li { white-space: pre-wrap; }
          <width>850</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+selection-background-color: rgb(252, 233, 79);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
        </property>
       </widget>
      </item>
