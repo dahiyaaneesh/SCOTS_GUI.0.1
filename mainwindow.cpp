@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), ui(new Ui::MainWin
 
     // Code snipet for adding the background image for GUI
 
-//    QPixmap bkgnd("blue.jpg");
-//    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+//    QPixmap bkgnd("/home/fmlab5/HCS.jpg");
+//  bkgnd = bkgnd.scaled(this->size() /*Qt::IgnoreAspectRatio*/);
 //    QPalette palette;
 //    palette.setBrush(QPalette::Background, bkgnd);
 //    this->setPalette(palette);
@@ -229,6 +229,407 @@ MainWindow::~MainWindow()
     delete new_model;
 }
 
+void MainWindow::bddcode()
+{
+
+    // Saving name of file into variable of class Mainwindow , newfilename from class newfilename_1 and adjusting it for writing into simulate.cc and newfile.cc.
+    newfilename=this->new_model->newfilename_1;
+    bddmake(); // calling makefile function for generating makefile for the code.
+    std::string filename;
+    filename=this->new_model->pathoffolder;
+    filename=filename.append("/");    // filename is of format : home/fmlab5/filename/
+
+    std::string filename_simulate =filename;
+    filename_simulate=filename_simulate.append("simulate.cc");
+    filename_simulate="/"+filename_simulate;
+    filename= filename.append(newfilename);
+    filename=filename.append(".cc");
+    filename="/"+filename;
+
+    std::ofstream file(filename.c_str()); // file is the write type stream for writing into the newfilenmae.cc
+
+
+    // Makingfile simulation.cc only when specifications and simulations are checked.
+    if((ui->checkBox_add_simulation->isChecked())&&(flag_add_avoid==0||flag_add_target==0||flag_add_safety==0))
+     {
+        QString starting_Point=ui->lineEdit_sim_statrting_point->text();
+        QStringList list= starting_Point.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
+        int i=0;
+        if(list.count()>Dim_ss)
+        {
+         QMessageBox::critical(this, "Error","The starting point isn't compatible with the dimension");
+         return;
+        }
+      foreach (starting_Point, list)
+      sim_start[i++]=starting_Point.toDouble();
+      std::ofstream f_sim(filename_simulate.c_str());
+       if(f_sim.is_open())
+       {
+           f_sim<<headerfilelist.c_str();
+           f_sim<<"const double xc=70; const double xl=3; const double rc=0.005; const double rl=0.05; const double ro=1; const double vs=1; const double mu=std::sqrt(2);";
+           f_sim<<"\n\n\nconst int state_dim="<<Dim_ss<<";"<<std::endl;
+           f_sim<<"const int input_dim="<<Dim_ii<<";"<<std::endl;
+           f_sim<<"const double tau="<<tau<<";\n\n"<<std::endl;
+           f_sim<<"using state_type = std::array<double,state_dim>;"<<std::endl
+               <<"using input_type = std::array<double,input_dim>;\n"<<std::endl;
+           f_sim<<"auto sys_post = [](state_type &x, const std::vector<double>& u) noexcept {"<<std::endl;
+           if(flag_rungge_kutta_sys==1)
+           {
+           f_sim<<"auto rhs =[](state_type& xx,  const state_type &x, const std::vector<double>& u) noexcept {"<<sys_post.c_str()<<std::endl<<"};";
+           f_sim<<"  scots::runge_kutta_fixed4(rhs,x,u,state_dim,tau,"<<rungekutta_step<<");"<<std::endl;
+           }
+           else
+           f_sim<<rad_post.c_str()<<std::endl;
+           f_sim<<"};"<<std::endl;
+           f_sim<<"\nint main()\n { \n"
+                <<"Cudd manager;"<<std::endl
+               <<" BDD C;"<<std::endl
+               <<" scots::SymbolicSet con;"<<std::endl
+               <<"  if(!read_from_file(manager,con,C,\"controller\")) {"<<std::endl
+               <<"     std::cout << \"Could not read controller from controller.scs\";"<<std::endl
+               <<"     return 0;"<<std::endl
+               <<"     }"<<std::endl;
+           f_sim<<"std::cout << \"Simulation: \";"<<std::endl
+               <<"state_type x={{";
+           for(int i=0;i<list.count();i++)
+           {
+               if(i==list.count()-1)
+                 f_sim<<sim_start[i];
+               else
+                 f_sim<<sim_start[i]<<" , ";
+           }
+           f_sim<<"}};"<<std::endl;
+           if(flag_target_lbub==2&&flag_add_target==2)
+           {
+           f_sim<<"\n\n auto target=[](const state_type& x) noexcept {"<<std::endl;
+           f_sim<<"  "<<std::endl
+               <<"  "<<std::endl
+               <<"    if( ";
+           for(int i=0;i<Dim_ss;i++)
+              {
+               if(i==Dim_ss-1)
+                 f_sim<<lb_target[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_target[i]<<")";
+               else
+                 f_sim<<lb_target[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_target[i]<<"&&";
+               }
+           f_sim<<"     "<<std::endl
+               <<"       return true;"<<std::endl
+               <<"      return false;"<<std::endl;
+           f_sim<<"};"<<std::endl;
+           f_sim<<"while(1){"<<std::endl
+                <<"auto u = con.restriction(manager,C,x);"<<std::endl
+                <<"std::cout";
+           for(int i=0;i<Dim_ss;i++)
+              { if(i==Dim_ss-1)
+                   f_sim<<"<<x["<<i<<"]<<\"   \"<<std::endl;";
+               else
+                   f_sim<<"<<x["<<i<<"]<<\"   \"";
+              }
+           f_sim<<" sys_post(x,u);"<<std::endl
+                <<"if(target(x)) {"<<std::endl;
+           f_sim<<"std::cout<<\"Arrived:\"";
+           for(int i=0;i<Dim_ss;i++)
+              { if(i==Dim_ss-1)
+                   f_sim<<"<<x["<<i<<"]<<\"   \"<<std::endl;"<<std::endl;
+               else
+                   f_sim<<"<<x["<<i<<"]<<\"   \"";
+              }
+           f_sim<<"break;"<<std::endl<<"}"<<std::endl;
+           f_sim<<"}"<<std::endl;
+           f_sim<<"return 1;"<<std::endl<<"}";
+           }
+           if(flag_safety==2&&flag_add_safety==2)
+           {
+             f_sim<<"for(int i=0; i<100; i++) {"<<std::endl
+                  <<"auto u = con.restriction(manager,C,x);"<<std::endl;
+             f_sim<<"std::cout";
+             for(int i=0;i<Dim_ss;i++)
+              { if(i==Dim_ss-1)
+                f_sim<<"<<x["<<i<<"]<<\"   \"<<std::endl;";
+               else
+                f_sim<<"<<x["<<i<<"]<<\"   \"";
+              }
+              f_sim<<"\n sys_post(x,u);" <<std::endl;
+              f_sim<<"}\n"<<"return 1;\n }";
+           }
+           if(flag_add_safety!=2&&flag_add_target!=2)
+               f_sim<<"return 1;"<<std::endl<<"}";
+           f_sim.close();
+       }
+       else
+           QMessageBox::critical(this,"sorry","Couldn't generate the code for simulation");
+    }// end of condition for adding simulation.
+
+    if(file.is_open()) // writing to the filename.cc
+     {
+      file<<headerfilelist.c_str();
+      file<<"const double xc=70; const double xl=3; const double rc=0.005; const double rl=0.05; const double ro=1; const double vs=1; const double mu=std::sqrt(2);";
+      file<<"\n\n\nconst int state_dim="<<Dim_ss<<";"<<std::endl;
+      file<<"const int input_dim="<<Dim_ii<<";"<<std::endl;
+      file<<"const double tau="<<tau<<";\n\n"<<std::endl;
+      file<<"using state_type = std::array<double,state_dim>;"<<std::endl
+          <<"using input_type = std::array<double,input_dim>;\n"<<std::endl
+          <<"using abs_type = scots::abs_type;"<<std::endl;
+
+      file<<"auto sys_post = [](state_type &x, const input_type &u) noexcept {"<<std::endl;
+      if(flag_rungge_kutta_sys==1)
+      {
+       file<<"auto rhs =[](state_type& xx,  const state_type &x, const input_type &u) noexcept {"<<sys_post.c_str()<<std::endl<<"};";
+       file<<"  scots::runge_kutta_fixed4(rhs,x,u,state_dim,tau,"<<rungekutta_step<<");"<<std::endl;
+      }
+      else
+       file<<rad_post.c_str()<<std::endl;
+      file<<"};"<<std::endl;
+      file<<"auto rad_post = [](state_type &r,const state_type& x, const input_type &u) noexcept {\n "<<std::endl;
+      if(flag_rungge_kutta_rad==1)
+      {
+       file<<"auto rhs =[](state_type& rr,  const state_type &r, const input_type &u) noexcept {\n"<<rad_post.c_str()<<std::endl<<"};";
+       file<<"scots::runge_kutta_fixed4(rhs,r,u,state_dim,tau,"<<rungekutta_step<<");";
+      }
+      else
+       file<<rad_post.c_str()<<std::endl;
+       file<<"\n};"<<std::endl;
+
+
+      file<<"\nint main()\n { \n"
+          <<"  TicToc tt;\n"<<std::endl
+          <<"Cudd manager;"<<std::endl
+          <<"manager.AutodynEnable();"<<std::endl
+          <<"  state_type eta_ss={{";
+       for(int i=0;i<Dim_ss;i++)
+        { if(i!=Dim_ss-1)
+            file<<eta_ss[i]<<",";
+         else
+           file<<eta_ss[i]<<"}};\n";
+        }
+      file<<"  state_type lb_ss={{";
+      for(int i=0;i<Dim_ss;i++)
+       {if(i!=Dim_ss-1)
+         file<<lb_ss[i]<<",";
+        else
+        file<<lb_ss[i]<<"}};\n";
+       }
+      file<<"  state_type ub_ss={{";
+      for(int i=0;i<Dim_ss;i++)
+       {if(i!=Dim_ss-1)
+         file<<ub_ss[i]<<",";
+        else
+        file<<ub_ss[i]<<"}};\n";
+       }
+     file<<"  scots::SymbolicSet ss_pre(manager,state_dim,lb_ss,ub_ss,eta_ss);"<<std::endl
+         <<"  scots::SymbolicSet ss_post(manager,state_dim,lb_ss,ub_ss,eta_ss);"<<std::endl
+         <<"  std::cout << \"Unfiorm grid details:\" << std::endl;"<<std::endl
+         <<"  ss_pre.print_info();"<<std::endl;
+     file<<"\n  input_type eta_ii={{";
+       for(int i=0;i<Dim_ii;i++)
+        { if(i!=Dim_ii-1)
+          file<<eta_ii[i]<<",";
+          else
+          file<<eta_ii[i]<<"}};\n";
+        }
+    file<<"  input_type lb_ii={{";
+      for(int i=0;i<Dim_ii;i++)
+       {if(i!=Dim_ii-1)
+        file<<lb_ii[i]<<",";
+       else
+       file<<lb_ii[i]<<"}};\n";
+       }
+    file<<"  input_type ub_ii={{";
+     for(int i=0;i<Dim_ii;i++)
+      {if(i!=Dim_ii-1)
+       file<<ub_ii[i]<<",";
+       else
+      file<<ub_ii[i]<<"}};\n";
+      }
+    file<<"  scots::SymbolicSet ii(manager,input_dim,lb_ii,ub_ii,eta_ii);"<<std::endl
+        <<"  std::cout << \"Unfiorm grid details:\" << std::endl;"<<std::endl
+        <<"  ii.print_info();\n\n"<<std::endl;
+    file<<"scots::SymbolicModel<state_type,input_type> sym_model(ss_pre,ii,ss_post);"<<std::endl
+        <<"\n"<<std::endl
+        <<"size_t no_trans;"<<std::endl;
+
+
+   if(flag_avoid==2&&flag_add_avoid==2)
+    {
+       file<<"double H["<<avoidrows<<"]["<<Dim_ss*2<<"]= {"<<std::endl;
+       for(int i=0;i<avoidrows;i++)
+       { if(i==avoidrows-1)
+          { file<<"{ ";
+           for(int j=0;j<Dim_ss*2;j++)
+            { if(j==(Dim_ss*2)-1)
+                 file<<avoid[i][j];
+             else
+                 file<<avoid[i][j]<<" ,";
+            }
+            file<<" } "<<std::endl;
+           }
+         else
+           { file<<"{ ";
+            for(int j=0;j<Dim_ss*2;j++)
+             { if(j==(Dim_ss*2)-1)
+                  file<<avoid[i][j];
+              else
+                  file<<avoid[i][j]<<" ,";
+              }
+               file<<" } , "<<std::endl;
+            }
+        }
+       file<<"   };"<<std::endl;
+       file<<"auto avoid = [&H,ss_pre](const abs_type& idx) {"<<std::endl
+           <<"state_type x;"<<std::endl
+           <<"ss_pre.itox(idx,x);"<<std::endl
+           <<"for(int i=0; i<"<<avoidrows<<"; i++) {"<<std::endl
+           <<"if(";
+       for(int i=0;i<Dim_ss;i++)
+       {
+         file<<"(H[i]["<<i<<"])<=x["<<i<<"] &&";
+       }
+       int j=0; ;
+       for(int i=Dim_ss; i<2*Dim_ss;i++ ,j++)
+       { if(i==2*Dim_ss-1)
+           file<<"(H[i]["<<i<<"])>=x["<<j<<"]";
+         else
+            file<<"(H[i]["<<i<<"])>=x["<<j<<"] &&";
+       }
+       file<<")"<<std::endl<<"    return true; }"<<std::endl<<"return false; \n  };"<<std::endl;
+       file<<" BDD A = ss_pre.ap_to_bdd(manager,avoid);"<<std::endl;
+       file<<"write_to_file(manager,ss_pre,A,\"obstacles\");"<<std::endl;
+       file<<" set = scots::SymbolicSet(scots::SymbolicSet(ss_pre,ii),ss_post);"<<std::endl;
+       file<<"tt.tic();"<<std::endl
+           <<"BDD tf =sym_model.compute_gb(manager,sys_post,rad_post,avoid,no_trans);"<<std::endl
+           <<"tt.toc();"<<std::endl
+           <<"std::cout << \"No of Transitions \" << no_trans  << std::endl;"<<std::endl;
+       file<<"scots::write_to_file(manager,set,tf,\"tf\");"<<std::endl;
+
+         }
+    else
+     {
+       file<<"tt.tic(); \nBDD tf =sym_model.compute_gb(manager,sys_post,rad_post,no_trans);"<<std::endl
+           <<"tt.toc();"<<std::endl
+           <<"std::cout << \"No of Transitions \" << no_trans  << std::endl;"<<std::endl;
+       //file<<"manager.DebugCheck();"<<std::endl;
+     }
+
+    if(flag_target_lbub==2&&flag_add_target==2)  // adding reachability specification.--------------------
+    {
+        QMessageBox::information(this,"Hello","Target specification for upper bound and lower bound successfully added !");
+        file<<"\n\n auto target=[&ss_pre](const scots::abs_type& idx) noexcept {"<<std::endl;
+        file<<"    state_type x;"<<std::endl
+            <<"    ss_pre.itox(idx,x);"<<std::endl
+            <<"    if( ";
+            for(int i=0;i<Dim_ss;i++)
+            {
+              if(i==Dim_ss-1)
+                 file<<lb_target[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_target[i]<<")";
+              else
+                  file<<lb_target[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_target[i]<<"&&";
+             }
+        file<<"     "<<std::endl
+            <<"       return true;"<<std::endl
+            <<"      return false;"<<std::endl;
+        file<<"};"<<std::endl;
+        file<<"BDD T = ss_pre.ap_to_bdd(manager,target);"<<std::endl;
+        file<<" write_to_file(ss_pre,target,\"target\");"<<std::endl
+            <<" std::cout << \"  Synthesis: \";"<<std::endl
+            <<"scots::EnfPre enf_pre(manager,tf,sym_model);"
+
+            <<" tt.tic();"<<std::endl
+            <<"BDD X=manager.bddOne();"<<std::endl
+            <<"BDD XX =manager.bddZero();"<<std::endl
+            <<"BDD C = manager.bddZero();"<<std::endl
+            <<"BDD U = ii.get_cube(manager);"<<std::endl
+            <<"size_t i;"<<std::endl
+            <<"for(i=1; XX != X; i++ ) {"<<std::endl
+            <<"X=XX;"<<std::endl
+            <<"XX=enf_pre(X) | T;"<<std::endl
+            <<"/* new (state/input) pairs */"<<std::endl
+            <<"BDD N = XX & (!(C.ExistAbstract(U)));"<<std::endl
+            <<"/* add new (state/input) pairs to the controller */"<<std::endl
+            <<"C=C | N;"<<std::endl
+            <<"/* print progress */"<<std::endl
+            <<"scots::print_progress(i);"<<std::endl
+            <<"}"<<std::endl
+            <<"std::cout << \"Number of iterations: \" << i << std::endl;"<<std::endl
+            <<"tt.toc();"<<std::endl
+            <<"std::cout << \"Winning domain size: \" << ss_pre.get_size(manager,C) << std::endl;"<<std::endl
+            <<"scots::SymbolicSet controller(ss_pre,ii);"<<std::endl
+            <<"std::cout << \"Write controller to controller.scs \";"<<std::endl
+            <<"if(write_to_file(manager,controller,C,\"controller\"))"<<std::endl
+            <<"std::cout << \"Done. \";"<<std::endl
+            <<"return 1;"<<std::endl;
+     }
+    else if(flag_safety==2&&flag_add_safety==2) // adding safety configuration.
+     {   QMessageBox::information(this,"Hello","Safety specification for upper bound and lower bound successfully added !");
+          file<<"\n\n auto safe=[&ss_pre](const scots::abs_type& idx) noexcept {"<<std::endl;
+          file<<"    state_type x;"<<std::endl
+              <<"    ss_pre.itox(idx,x);"<<std::endl
+              <<"    if( ";
+              for(int i=0;i<Dim_ss;i++)
+              {
+                if(i==Dim_ss-1)
+                   file<<lb_safety[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_safety[i]<<")";
+                else
+                    file<<lb_safety[i]<<"<=x["<<i<<"] && x["<<i<<"]<="<<ub_safety[i]<<"&&";
+               }
+          file<<"     "<<std::endl
+              <<"       return true;"<<std::endl
+              <<"      return false;"<<std::endl;
+          file<<"};"<<std::endl;
+
+          file<<"BDD S = ss_pre.ap_to_bdd(manager,safe);"<<std::endl
+              <<"scots::EnfPre enf_pre(manager,tf,sym_model);"<<std::endl
+              <<"tt.tic();"<<std::endl
+              <<"size_t i,j;"<<std::endl
+              <<"/* outer fp*/"<<std::endl
+              <<"BDD Z=manager.bddOne();"<<std::endl
+              <<"BDD ZZ=manager.bddZero();"<<std::endl
+              <<"/* inner fp*/"<<std::endl
+              <<"BDD Y=manager.bddZero();"<<std::endl
+              <<"BDD YY=manager.bddOne();"<<std::endl
+              <<"/* the controller */"<<std::endl
+              <<"BDD C=manager.bddZero();"<<std::endl
+              <<"/* helper */"<<std::endl
+              <<"BDD U=ii.get_cube(manager);"<<std::endl
+              <<"/* as long as not converged */"<<std::endl
+              <<"for(i=1; ZZ != Z; i++) {"<<std::endl
+              <<"Z=ZZ;"<<std::endl
+              <<"BDD preZ=enf_pre(Z);"<<std::endl
+              <<"/* init inner fp */"<<std::endl
+              <<"YY = manager.bddOne();"<<std::endl
+              <<"for(j=1; YY != Y; j++) {"<<std::endl
+              <<"  Y=YY;"<<std::endl
+              <<"  YY = ( enf_pre(Y) & S ) | preZ;"<<std::endl
+              <<"}"<<std::endl
+              <<"ZZ=YY;"<<std::endl;
+
+          file<<"std::cout << \"Inner: \" << j << std::endl;"<<std::endl
+              <<"/* remove all state-input pairs that have been added"<<std::endl
+              <<" * to the controller already in the previous iterations */"<<std::endl
+              <<"BDD N = ZZ & (!(C.ExistAbstract(U)));"<<std::endl
+              <<"/* add the remaining pairs to the controller */"<<std::endl
+              <<"C=C | N;"<<std::endl
+              <<"}"<<std::endl;
+
+          file<<"std::cout << \"Outer: \" << i << std::endl;"<<std::endl
+              <<"tt.toc();"<<std::endl
+              <<"std::cout << \"Winning domain size: \" << ss_pre.get_size(manager,C) << std::endl;"<<std::endl
+              <<"\n\n /* symbolic set for the controller */"<<std::endl
+              <<"scots::SymbolicSet controller(ss_pre,ii);"<<std::endl
+              <<"std::cout << \"Write controller to controller.scs \"<<std::endl;"<<std::endl
+              <<"if(write_to_file(manager,controller,C,\"controller\"))"<<std::endl
+              <<"std::cout << \"Done. \"<<std::endl;"<<std::endl
+              <<"return 1;"<<std::endl;
+
+
+        }
+    file<<"}";
+    file.close();
+  } // writing to the filenam.cc ends
+  else // Filename.cc couldn't open hence showing appropriate message.
+    std::cout<<"File for writing the main code didn't open";
+
+
+}
 
 //Pushbutton for generating the code under Generate code widget Name of pushbutton: " Generate code ".
 
@@ -288,7 +689,13 @@ void MainWindow::on_pushButton_clicked()
 
    // End of checking specification.
 
+    makefile(); // calling makefile function for generating makefile for the code.
 
+    if(ui->radioButton_BDD->isChecked())
+    {
+        bddcode();
+        return;
+    }
 
       /*std::ifstream file1 ("newfilename.txt");
         if(file1.is_open())
@@ -302,7 +709,7 @@ void MainWindow::on_pushButton_clicked()
 
      // Saving name of file into variable of class Mainwindow , newfilename from class newfilename_1 and adjusting it for writing into simulate.cc and newfile.cc.
      newfilename=this->new_model->newfilename_1;
-     makefile(); // calling makefile function for generating makefile for the code.
+
      std::string filename;
      filename=this->new_model->pathoffolder;
      filename=filename.append("/");    // filename is of format : home/fmlab5/filename/
@@ -353,7 +760,16 @@ void MainWindow::on_pushButton_clicked()
 
 
    if((ui->checkBox_add_simulation->isChecked())&&(flag_add_avoid==0||flag_add_target==0||flag_add_safety==0)) // Makingfile simulation.cc only when specifications and simulations are checked.
-   {
+   {   QString starting_Point=ui->lineEdit_sim_statrting_point->text();
+       QStringList list= starting_Point.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
+       int i=0;
+       if(list.count()>Dim_ss)
+       {
+           QMessageBox::critical(this, "Error","The starting point isn't compatible with the dimension");
+           return;
+       }
+       foreach (starting_Point, list)
+               sim_start[i++]=starting_Point.toDouble();
      std::ofstream f_sim(filename_simulate.c_str());
       if(f_sim.is_open())
       {
@@ -380,7 +796,15 @@ void MainWindow::on_pushButton_clicked()
               <<"     return 0;"<<std::endl
               <<"     }"<<std::endl;
           f_sim<<"std::cout << \"Simulation: \";"<<std::endl
-              <<"state_type x={{1.2, 5.6}};"<<std::endl;
+              <<"state_type x={{";
+          for(int i=0;i<list.count();i++)
+          {
+              if(i==list.count()-1)
+                f_sim<<sim_start[i];
+              else
+                f_sim<<sim_start[i]<<" , ";
+          }
+          f_sim<<"}};"<<std::endl;
           if(flag_target_lbub==2&&flag_add_target==2)
           {
           f_sim<<"\n\n auto target=[](const state_type& x) noexcept {"<<std::endl;
@@ -1005,14 +1429,15 @@ void MainWindow:: on_actionOpen_Model_triggered()
       {  QMessageBox::warning(this,"Warning","You didn't select any file");
          return;
       }
+    this->new_model->flag_filename_entered=1;
+  //this->new_model->select_stacked_widget(1);
+   //  this->new_model->show();
     path.erase(0,1);
     QStringList str=QString::fromStdString(path).split("/");
     int n=str.count();
     this->new_model->newfilename_1=str[n-1].toStdString();
+    newfilename=this->new_model->newfilename_1;
     this->new_model->pathoffolder=path;
-    this->new_model->flag_filename_entered=1;
-   //this->new_model->select_stacked_widget(1);
-   //  this->new_model->show();
     ui->new_model_stacked_widget->show();
     ui->treeWidget_newmodel->hide();
     ui->new_model_stacked_widget->setCurrentIndex(7);
@@ -1084,18 +1509,14 @@ void MainWindow::on_treeWidget_newmodel_clicked(const QModelIndex &index)
 }
 
 
-// Functions that writee Makefile for the model , it is called in the function for pushbutton for generating the code.
-void MainWindow::makefile()
-{   std::string path;
-    std::ifstream file ("/home/fmlab5/build-test_5-Desktop_Qt_5_8_0_GCC_64bit-Debug/newfoldername.txt");
-       if(file.is_open())
-         {
-           std::getline(file,path);
-           file.close();
-           path="/"+path;
-           path.append("/");
-           path.append("Makefile");
-           std::ofstream file1 (path);
+
+void MainWindow::bddmake()
+{
+
+          std::string path1="/"+path;
+           path1.append("/");
+           path1.append("Makefile");
+           std::ofstream file1 (path1.c_str());
               if(file1.is_open())
                  {
                     file1<<"#"<<std::endl
@@ -1103,34 +1524,75 @@ void MainWindow::makefile()
                           <<"#"<<std::endl
                           <<"CC\t= g++"<<std::endl
                           <<"#CC\t= clang++"<<std::endl
-                          <<"CXXFLAGS\t= -g -Wall -Wextra -std=c++11"<<std::endl
-                          <<"CXXFLAGS\t= -Wall -Wextra -std=c++11 -O3 -DNDEBUG"<<std::endl
+                          <<"#CXXFLAGS 		= -g -Wall -Wextra -std=c++11 -DSCOTS_BDD"<<std::endl
+                          <<"CXXFLAGS 		= -Wall -Wextra -std=c++11 -O3 -DNDEBUG -DSCOTS_BDD"<<std::endl
                           <<"\n#"<<std::endl
                           <<"# scots "<<std::endl
                           <<"#"<<std::endl
                           <<"SCOTSROOT\t= "<<path_of_scots.c_str()<<std::endl
                           <<"SCOTSINC\t= -I$(SCOTSROOT)/src  -I$(SCOTSROOT)/utils/"<<std::endl
+                          <<"\n#"<<std::endl
+                          <<"# cudd "<<std::endl
+                          <<"#"<<std::endl
+                          <<"CUDDINC =  -I/opt/local/include "<<std::endl
+                          <<"CUDDLIB =  -L/opt/local/lib -lcudd"<<std::endl
                           <<"\n.PHONY: "<<newfilename<<" simulate"<<std::endl
                           <<"\nTARGET = "<<newfilename<<" simulate"<<std::endl
                           <<"\nall: $(TARGET)"<<std::endl
 
                           <<"\n"<<newfilename<<":"<<std::endl
-                          <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<std::endl;
+                          <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<"\t$(CUDDLIB)"<<std::endl;
 
                      file1<<"\nsimulate:"<<std::endl
-                          <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) simulate.cc -o simulate"<<std::endl
+                          <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) simulate.cc -o simulate\t$(CUDDLIB)"<<std::endl
                           <<"\nclean:"<<std::endl
                           <<"\t"<<"rm "<<newfilename<<" simulate"<<std::endl;
                     file1.close();
                  }
               else
                  std::cout<<"\n Couldn't write in makefile";
-        }
-       else
-        std::cout<<"\n Couldnt get path for folder";
+
 
 }
 
+// Functions that writee Makefile for the model , it is called in the function for pushbutton for generating the code.
+void MainWindow::makefile()
+{
+              std::string path1="/"+path;
+               path1.append("/");
+               path1.append("Makefile");
+               std::ofstream file1 (path1);
+                  if(file1.is_open())
+                     {
+                        file1<<"#"<<std::endl
+                              <<"# compiler"<<std::endl
+                              <<"#"<<std::endl
+                              <<"CC\t= g++"<<std::endl
+                              <<"#CC\t= clang++"<<std::endl
+                              <<"CXXFLAGS\t= -g -Wall -Wextra -std=c++11"<<std::endl
+                              <<"CXXFLAGS\t= -Wall -Wextra -std=c++11 -O3 -DNDEBUG"<<std::endl
+                              <<"\n#"<<std::endl
+                              <<"# scots "<<std::endl
+                              <<"#"<<std::endl
+                              <<"SCOTSROOT\t= "<<path_of_scots.c_str()<<std::endl
+                              <<"SCOTSINC\t= -I$(SCOTSROOT)/src  -I$(SCOTSROOT)/utils/"<<std::endl
+                              <<"\n.PHONY: "<<newfilename<<" simulate"<<std::endl
+                              <<"\nTARGET = "<<newfilename<<" simulate"<<std::endl
+                              <<"\nall: $(TARGET)"<<std::endl
+
+                              <<"\n"<<newfilename<<":"<<std::endl
+                              <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<std::endl;
+
+                         file1<<"\nsimulate:"<<std::endl
+                              <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) simulate.cc -o simulate"<<std::endl
+                              <<"\nclean:"<<std::endl
+                              <<"\t"<<"rm "<<newfilename<<" simulate"<<std::endl;
+                        file1.close();
+                     }
+                  else
+                     std::cout<<"\n Couldn't write in makefile";
+
+}
 
 //Pushbutton: "Compile and run code" in Generate code stacked widget.
 void MainWindow::on_pushButton_compileandrun_clicked()
@@ -1351,7 +1813,14 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
     if(this->new_model->flag_filename_entered==2||this->new_model->flag_filename_entered==1)
     {
 
-        ui->new_model_stacked_widget->setCurrentIndex(8);
+        if(this->new_model->flag_filename_entered==2)
+        {
+            path=this->new_model->pathoffolder;
+        }
+
+
+         newfilename=this->new_model->newfilename_1;
+         ui->new_model_stacked_widget->setCurrentIndex(8);
          ui->treeWidget_newmodel->setHeaderLabel(QString::fromStdString(this->new_model->newfilename_1));
          setWindowTitle(QString::fromStdString(this->new_model->newfilename_1));
          ui->treeWidget_newmodel->show();
@@ -1407,6 +1876,7 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
     //condition for open model functionality.
     if(this->new_model->flag_filename_entered==1)
        {
+
         std::ifstream file_state("/"+this->new_model->pathoffolder+"/state_param.txt");
         if(file_state.is_open())
         {   QString state_param ,eta="",ub="",lb="";

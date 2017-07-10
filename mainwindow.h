@@ -16,7 +16,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     int Dim_ss=2 ,Dim_ii=1 ; double tau=1;
-    double eta_ss[10]={0.5, 0.5} ,lb_ss[10]={0 ,0} ,ub_ss[10]={1 ,1} ,lb_ii[10]={1},ub_ii[10]={2},eta_ii[10]={1};
+    double eta_ss[10]={0.5, 0.5} ,lb_ss[10]={0 ,0} ,ub_ss[10]={1 ,1} ,lb_ii[10]={1},ub_ii[10]={2},eta_ii[10]={1} ,sim_start[10];
     int flag_input_parameters=0;
     int flag_state_parameters=0 ,flag_rad_post=0 ,flag_sys_post=0;
     std::string rad_post;
@@ -30,6 +30,7 @@ public:
     int flag_add_avoid=0 ,flag_add_safety=0,flag_add_target=0 ,flag_simulation=0;
     std::string path;
     std::string path_of_scots="/home/fmlab5/SCOTSv0.2";
+
 
 private slots:
     void on_pushButton_clicked();
@@ -64,6 +65,10 @@ private slots:
     void on_actionPath_for_SCOTS_triggered();
 
     void on_actionAbout_triggered();
+
+    void bddcode();
+
+    void bddmake();
 
 private:
     Ui::MainWindow *ui;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1111</width>
-    <height>1079</height>
+    <width>870</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>973</width>
-    <height>864</height>
+    <width>870</width>
+    <height>790</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>870</width>
+    <height>790</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -37,20 +43,98 @@
      <rect>
       <x>9</x>
       <y>9</y>
-      <width>1038</width>
-      <height>713</height>
+      <width>860</width>
+      <height>702</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_20">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
-        <widget class="QStackedWidget" name="new_model_stacked_widget">
+        <widget class="QTreeWidget" name="treeWidget_newmodel">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>New Model</string>
+          </property>
+         </column>
+         <item>
+          <property name="text">
+           <string>Input grid parameters</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>State grid parameters</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>System Dynamics</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Radius Post</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Specification</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Reach</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Avoid</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>safety</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Generate Code</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QStackedWidget" name="new_model_stacked_widget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>650</width>
+           <height>500</height>
+          </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -59,7 +143,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="currentIndex">
-          <number>10</number>
+          <number>6</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1225,7 +1309,7 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>80</x>
-             <y>300</y>
+             <y>370</y>
              <width>221</width>
              <height>25</height>
             </rect>
@@ -1244,7 +1328,7 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>80</x>
-             <y>340</y>
+             <y>410</y>
              <width>221</width>
              <height>25</height>
             </rect>
@@ -1303,12 +1387,12 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>80</x>
              <y>200</y>
-             <width>131</width>
+             <width>271</width>
              <height>23</height>
             </rect>
            </property>
            <property name="text">
-            <string>Add simulation</string>
+            <string>Add simulation and its starting Point</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_15">
@@ -1324,6 +1408,53 @@ p, li { white-space: pre-wrap; }
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;li align=&quot;justify&quot;&gt;Choose all the features you want to add to the generated code, make sure&lt;/li&gt;&lt;li align=&quot;justify&quot;&gt; to generate code each time you change the parameters.&lt;/li&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
+          <widget class="QRadioButton" name="radioButton_BDD">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>300</y>
+             <width>201</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>BDD implementation</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="radioButton_sparse">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>330</y>
+             <width>231</width>
+             <height>23</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Sparse Matrix implementation</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_sim_statrting_point">
+           <property name="geometry">
+            <rect>
+             <x>360</x>
+             <y>201</y>
+             <width>113</width>
+             <height>20</height>
+            </rect>
+           </property>
+          </widget>
+          <zorder>pushButton</zorder>
+          <zorder>pushButton_compileandrun</zorder>
+          <zorder>checkBox_add_safety</zorder>
+          <zorder>checkBox_add_target</zorder>
+          <zorder>checkBox_add_avoid</zorder>
+          <zorder>checkBox_add_simulation</zorder>
+          <zorder>label_15</zorder>
+          <zorder>radioButton_BDD</zorder>
+          <zorder>radioButton_sparse</zorder>
+          <zorder>lineEdit_sim_statrting_point</zorder>
+          <zorder>treeWidget_newmodel</zorder>
          </widget>
          <widget class="QWidget" name="page_9">
           <layout class="QVBoxLayout" name="verticalLayout_23">
@@ -1596,118 +1727,33 @@ p, li { white-space: pre-wrap; }
          </widget>
         </widget>
        </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_16">
-         <item>
-          <widget class="QTreeWidget" name="treeWidget_newmodel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>256</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::ClickFocus</enum>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string>New Model</string>
-            </property>
-           </column>
-           <item>
-            <property name="text">
-             <string>Input grid parameters</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>State grid parameters</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>System Dynamics</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Radius Post</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Specification</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Reach</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Avoid</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>safety</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>Generate Code</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </item>
      <item>
-      <widget class="QTextBrowser" name="textBrowser_status"/>
+      <widget class="QTextBrowser" name="textBrowser_status">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>850</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
-   <zorder>layoutWidget</zorder>
-   <zorder>textBrowser_sys_post</zorder>
-   <zorder>textEdit_sys_post</zorder>
-   <zorder>textEdit_sys_post</zorder>
-   <zorder>textEdit_rad_post</zorder>
-   <zorder>textBrowser_rad_post</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1111</width>
+     <width>870</width>
      <height>22</height>
     </rect>
    </property>
