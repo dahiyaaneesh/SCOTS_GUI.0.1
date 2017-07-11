@@ -68,13 +68,13 @@
           </size>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">background - color : rgb(252, 233, 79)</string>
+          <string notr="true">QTreeWidget::item:pressed,QTreeWidget::item:selected{backgro‌​und-color:#FFF000;}</string>
          </property>
          <column>
           <property name="text">
@@ -93,12 +93,12 @@
          </item>
          <item>
           <property name="text">
-           <string>System Dynamics</string>
+           <string>System dynamics</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Radius Post</string>
+           <string>Radius post</string>
           </property>
          </item>
          <item>
@@ -123,7 +123,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Generate Code</string>
+           <string>Generate code</string>
           </property>
          </item>
         </widget>
@@ -149,7 +149,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>11</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -177,7 +177,7 @@
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; font-style:italic;&quot;&gt;Input grid parameters&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;(of state space)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; font-style:italic;&quot;&gt;Input space parameters&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -204,28 +204,28 @@
                  <item>
                   <widget class="QLabel" name="label_dim_ii">
                    <property name="text">
-                    <string>Input Dimension</string>
+                    <string>Input dimension</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_eta_ii">
                    <property name="text">
-                    <string>Grid radius</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quantization parameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_lb_ii">
                    <property name="text">
-                    <string>Lower Bound</string>
+                    <string>Lower bound</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_ub_ii">
                    <property name="text">
-                    <string>Upper Bound</string>
+                    <string>Upper bound</string>
                    </property>
                   </widget>
                  </item>
@@ -358,7 +358,7 @@
              <item>
               <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; font-style:italic;&quot;&gt;State grid parameters&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;&gt;(of state space)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; font-style:italic;&quot;&gt;State space parameters&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -382,28 +382,28 @@
                  <item>
                   <widget class="QLabel" name="label_dim_ss_">
                    <property name="text">
-                    <string>State Dimension</string>
+                    <string>State dimension</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_eta_ss">
                    <property name="text">
-                    <string>Grid radius</string>
+                    <string>Quantization parameters</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_lb_ss">
                    <property name="text">
-                    <string>Lower Bound</string>
+                    <string>Lower bound</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label">
                    <property name="text">
-                    <string>Upper Bound</string>
+                    <string>Upper bound</string>
                    </property>
                   </widget>
                  </item>
@@ -580,22 +580,16 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot; bgcolor=&quot;#ffffe0&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-style:italic; color:#000000;&quot;&gt;&amp;lt;&amp;lt;-----Write radius post there&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Example:  &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; For state dimension=2 and for input dimension=1&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Case 1&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;: Using Rungge Kutta ODE solver.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;  int R=5; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      rr[0]=(12/5)*R*r[0]+r[1]/5+u[0]*2;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      int R=5; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      rr[0]=R*r[0]+r[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      rr[1]=r[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Case 2&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;: Without using Rungge Kutta ODE solver.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;   &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#555753;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; color:#babdb6;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;state_type rr;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; color:#babdb6;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;state_type rr;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;int R=5; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;rr[0]=r[0]&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; + (12/5)*R*r[0]+r[1]/5+u[0]*2;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;rr[0]=r[0]&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; + R*r[0]+r[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt; rr[1]=r[1] &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;+ r[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;   r =rr;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#888a85;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -803,25 +797,18 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot; bgcolor=&quot;#ffffe0&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-style:italic; color:#000000;&quot;&gt;&amp;lt;&amp;lt;-----Write dynamics there&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Example:  &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; For state dimension=2 and for input dimension=1&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Case 1&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;: Using Rungge Kutta ODE solver.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;  int R=5; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      xx[0]=(12/5)*R*x[0]+x[1]/5+u[0]*2;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      int R=5; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      xx[0]=R*x[0]+x[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;      xx[1]=x[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#000000;&quot;&gt;Case 2&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;: Without using Rungge Kutta ODE solver.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;   &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#555753;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; color:#babdb6;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;state_type xx;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;state_type xx;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;int R=5; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;xx[0]=x[0]&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; + (12/5)*R*x[0]+x[1]/5+u[0]*2;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;xx[0]=x[0]&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; + R*x[0]+x[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;   &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt; xx[1]=x[1] &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt;+ x[1]+u[0];&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#555753;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#888a85;&quot;&gt;   x =xx;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#888a85;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-style:italic; color:#000000;&quot;&gt;Note:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-style:italic; color:#000000;&quot;&gt;*Use standard C++ syntax.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;

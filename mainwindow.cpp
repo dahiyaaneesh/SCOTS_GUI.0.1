@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     new_model=new New_Model_dialog(this);                // creating object of the class new_model_dialog, responsible for adding the new file name for new_model functionality/
 
+    //listWidget->setStyleSheet("QListView::item:selected {background : transparent; border: solid 2px red;}");
+     ui->treeWidget_newmodel->setStyleSheet("selection-background-color: white; selection-color : black");
     // Code snipet for adding the background image for GUI
 
 //    QPixmap bkgnd("/home/fmlab5/HCS.jpg");
@@ -1545,16 +1547,25 @@ void MainWindow::bddmake()
                           <<"#"<<std::endl
                           <<"CUDDINC =  -I/opt/local/include "<<std::endl
                           <<"CUDDLIB =  -L/opt/local/lib -lcudd"<<std::endl
-                          <<"\n.PHONY: "<<newfilename<<" simulate"<<std::endl
-                          <<"\nTARGET = "<<newfilename<<" simulate"<<std::endl
-                          <<"\nall: $(TARGET)"<<std::endl
+                          <<"\n.PHONY: "<<newfilename;
+                    if(ui->checkBox_add_simulation->isChecked())
+                        file1<<" simulate"<<std::endl;
+                    else
+                        file1<<std::endl
+                          <<"\nTARGET = "<<newfilename;
+                    if(ui->checkBox_add_simulation->isChecked())
+                        file1<<" simulate"<<std::endl;
+                    else
+                        file1<<std::endl;
+                        file1<<"\nall: $(TARGET)"<<std::endl
 
                           <<"\n"<<newfilename<<":"<<std::endl
                           <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<"\t$(CUDDLIB)"<<std::endl;
-
+                    if(ui->checkBox_add_simulation->isChecked())
                      file1<<"\nsimulate:"<<std::endl
-                          <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) simulate.cc -o simulate\t$(CUDDLIB)"<<std::endl
-                          <<"\nclean:"<<std::endl
+                          <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) simulate.cc -o simulate\t$(CUDDLIB)"<<std::endl;
+
+                     file1<<"\nclean:"<<std::endl
                           <<"\t"<<"rm "<<newfilename<<" simulate"<<std::endl;
                     file1.close();
                  }
@@ -1585,16 +1596,25 @@ void MainWindow::makefile()
                               <<"#"<<std::endl
                               <<"SCOTSROOT\t= "<<path_of_scots.c_str()<<std::endl
                               <<"SCOTSINC\t= -I$(SCOTSROOT)/src  -I$(SCOTSROOT)/utils/"<<std::endl
-                              <<"\n.PHONY: "<<newfilename<<" simulate"<<std::endl
-                              <<"\nTARGET = "<<newfilename<<" simulate"<<std::endl
-                              <<"\nall: $(TARGET)"<<std::endl
+                              <<"\n.PHONY: "<<newfilename;
+                        if(ui->checkBox_add_simulation->isChecked())
+                            file1<<" simulate"<<std::endl;
+                        else
+                            file1<<std::endl;
+                            file1<<"\nTARGET = "<<newfilename;
+                        if(ui->checkBox_add_simulation->isChecked())
+                            file1<<" simulate"<<std::endl;
+                        else
+                            file1<<std::endl;
+                            file1<<"\nall: $(TARGET)"<<std::endl
 
                               <<"\n"<<newfilename<<":"<<std::endl
                               <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<std::endl;
+                         if(ui->checkBox_add_simulation->isChecked())
+                          file1<<"\nsimulate:"<<std::endl
+                              <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) simulate.cc -o simulate"<<std::endl;
 
-                         file1<<"\nsimulate:"<<std::endl
-                              <<"\t$(CC) $(CXXFLAGS) $(SCOTSINC) simulate.cc -o simulate"<<std::endl
-                              <<"\nclean:"<<std::endl
+                          file1<<"\nclean:"<<std::endl
                               <<"\t"<<"rm "<<newfilename<<" simulate"<<std::endl;
                         file1.close();
                      }
