@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), ui(new Ui::MainWin
     new_model=new New_Model_dialog(this);                // creating object of the class new_model_dialog, responsible for adding the new file name for new_model functionality/
 
     //listWidget->setStyleSheet("QListView::item:selected {background : transparent; border: solid 2px red;}");
-     ui->treeWidget_newmodel->setStyleSheet("selection-background-color: white; selection-color : black");
+    // ui->treeWidget_newmodel->setStyleSheet("selection-background-color: white; selection-color : black");
     // Code snipet for adding the background image for GUI
 
 //    QPixmap bkgnd("/home/fmlab5/HCS.jpg");
@@ -1551,16 +1551,17 @@ void MainWindow::bddmake()
                     if(ui->checkBox_add_simulation->isChecked())
                         file1<<" simulate"<<std::endl;
                     else
-                        file1<<std::endl
-                          <<"\nTARGET = "<<newfilename;
+                        file1<<std::endl;
+
+                       file1<<"\nTARGET = "<<newfilename;
                     if(ui->checkBox_add_simulation->isChecked())
                         file1<<" simulate"<<std::endl;
                     else
                         file1<<std::endl;
-                        file1<<"\nall: $(TARGET)"<<std::endl
 
-                          <<"\n"<<newfilename<<":"<<std::endl
-                          <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<"\t$(CUDDLIB)"<<std::endl;
+                    file1<<"\nall: $(TARGET)"<<std::endl
+                         <<"\n"<<newfilename<<":"<<std::endl
+                         <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) "<<newfilename<<".cc -o  "<<newfilename<<"\t$(CUDDLIB)"<<std::endl;
                     if(ui->checkBox_add_simulation->isChecked())
                      file1<<"\nsimulate:"<<std::endl
                           <<"\t$(CC) $(CXXFLAGS) $(CUDDINC) $(SCOTSINC) simulate.cc -o simulate\t$(CUDDLIB)"<<std::endl;
