@@ -50,15 +50,14 @@ private slots:
     void on_actionNew_Model_triggered();
 
     void on_treeWidget_newmodel_clicked(const QModelIndex &index);
+
     void makefile();
 
     void on_pushButton_compileandrun_clicked();
 
     void on_actionOpen_Model_triggered();
 
-
     void on_pushButton_target_bounds_clicked();
-
 
     void on_pushButton_safety_clicked();
 
@@ -73,6 +72,62 @@ private slots:
     void bddcode();
 
     void bddmake();
+
+    void on_pushButton_new_model_clicked();
+
+    void on_pushButton_open_model_clicked();
+
+    void on_spinBox_dim_ii_editingFinished();
+
+    void on_lineEdit_eta_ii_editingFinished();
+
+    void on_lineEdit_lb_ii_editingFinished();
+
+    void on_lineEdit_ub_ii_editingFinished();
+
+    void on_spinBox_dim_ss_editingFinished();
+
+    void on_lineEdit_eta_ss_editingFinished();
+
+    void on_lineEdit_lb_ss_editingFinished();
+
+    void on_lineEdit_ub_ss_editingFinished();
+
+    void on_pushButton_exit_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_checkBox_add_safety_stateChanged(int arg1);
+
+    void on_checkBox_add_target_stateChanged(int arg1);
+
+
+
+    void on_lineEdit_tau_editingFinished();
+
+    void on_lineEdit_runggekutta_step_editingFinished();
+
+    void on_textEdit_sys_post_textChanged();
+
+    void on_checkBox_sys_post_stateChanged(int arg1);
+
+    void on_textEdit_rad_post_textChanged();
+
+    void on_checkBox_rad_post_stateChanged(int arg1);
+
+    void on_lineEdit_target_lb_editingFinished();
+
+    void on_lineEdit_target_ub_editingFinished();
+
+    void on_lineEdit_safety_lb_editingFinished();
+
+    void on_lineEdit_safety_ub_editingFinished();
+
+    void on_textEdit_avoid_textChanged();
+
+    void on_radioButton_BDD_clicked();
+
+    void on_radioButton_sparse_clicked();
 
 private:
     Ui::MainWindow *ui;

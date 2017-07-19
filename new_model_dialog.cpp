@@ -45,7 +45,7 @@ void New_Model_dialog::on_pushButton_filename_clicked()
     file.close();
 
     //making a folder for the new model.
-    std::string foldername="mkdir \"/home/fmlab5/";
+    std::string foldername="mkdir \"/home/SCOTS_GUI_Models/";
     foldername=foldername.append(newfilename_1);
     foldername=foldername.append("\"");
     std::cout<<"the foldername is "<<foldername;
@@ -60,9 +60,9 @@ void New_Model_dialog::on_pushButton_filename_clicked()
           std::ofstream file1("newfoldername.txt");
          if(file1.is_open())
             { flag_filename_entered=2;
-             file1<<"home/fmlab5/"<<newfilename_1.c_str()<<std::endl;
+             file1<<"home/SCOTS_GUI_Models/"<<newfilename_1.c_str()<<std::endl;
              file1.close();
-             pathoffolder="home/fmlab5/"+newfilename_1;
+             pathoffolder="home/SCOTS_GUI_Models/"+newfilename_1;
             }
         else
             std::cout<<"\n couldn't save foldername";}

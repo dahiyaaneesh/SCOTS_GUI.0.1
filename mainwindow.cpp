@@ -34,22 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent), ui(new Ui::MainWin
 {
     ui->setupUi(this);
     new_model=new New_Model_dialog(this);                // creating object of the class new_model_dialog, responsible for adding the new file name for new_model functionality/
-
-    //listWidget->setStyleSheet("QListView::item:selected {background : transparent; border: solid 2px red;}");
-    // ui->treeWidget_newmodel->setStyleSheet("selection-background-color: white; selection-color : black");
-    // Code snipet for adding the background image for GUI
-
-//    QPixmap bkgnd("/home/fmlab5/HCS.jpg");
-//  bkgnd = bkgnd.scaled(this->size() /*Qt::IgnoreAspectRatio*/);
-//    QPalette palette;
-//    palette.setBrush(QPalette::Background, bkgnd);
-//    this->setPalette(palette);
-
-    // Code for adding background ends.
-
-
+    ui->pushButton_input_parameters->setEnabled(false);
+    ui->pushButton_state_parameters->setEnabled(false);
+    ui->pushButton_compileandrun->setEnabled(false);
+    ui->pushButton->setEnabled(false);
     //Hiding all other tab and widgets, they will be only shown only on choosing open_model and new_model functionality.
-    ui->new_model_stacked_widget->hide();
+    ui->new_model_stacked_widget->setCurrentIndex(12);
     ui->treeWidget_newmodel->hide();
     ui->textBrowser_status->hide();
 
@@ -726,29 +716,6 @@ void MainWindow::on_pushButton_clicked()
      filename=filename.append("/");    // filename is of format : home/fmlab5/filename/
 
 
-   /*   rad_post="\nauto rhs =[](state_type& rr,  const state_type &r, const input_type &u) noexcept "----xxxxxxxxxxxxxxxxx
-                         "\n{"
-                         "\n if(u[0]==1) {\n"
-                         "\n   rr[0]=-rl/xl*r[0];"
-                         "\n    rr[1]=-1/(xc*(ro+rc))*r[1];"
-                         "\n             } "
-                         "\n    else {"
-                         "\n       rr[0]=-(1/xl)*(rl+ro*rc/(ro+rc))*r[0]+(1/xl)*ro/(5*(ro+rc))*r[1];"
-                         "\n       rr[1]=5*(1/xc)*ro/(ro+rc)*r[0]-(1/xc)*(1/(ro+rc))*r[1];"
-                         "\n         }"
-                         "\n};";
-    sys_post="\n\n auto rhs =[](state_type& xx,  const state_type &x, const input_type &u) noexcept "
-                         "\n {"
-                         "\n    if(u[0]==1) {"
-                         "\n      xx[0]=-rl/xl*x[0]+vs/xl;"
-                         "\n      xx[1]=-1/(xc*(ro+rc))*x[1];"
-                         "\n                }"
-                         "\n    else {"
-                         "\n      xx[0]=-(1/xl)*(rl+ro*rc/(ro+rc))*x[0]-(1/xl)*ro/(5*(ro+rc))*x[1]+vs/xl;"
-                         "\n      xx[1]=(1/xc)*5*ro/(ro+rc)*x[0]-(1/xc)*(1/(ro+rc))*x[1];"
-                         "\n         }"
-                         "\n };";*/
-   //std::string filename="/NewMOdel";filename=filename.append(newfilename);filename=filename.append("/"); -----xxxxxx
 
    std::string filename_simulate =filename;
    filename_simulate=filename_simulate.append("simulate.cc");
@@ -1071,6 +1038,8 @@ void MainWindow::on_pushButton_clicked()
       }
   file<<"}";
   file.close();
+  ui->pushButton_compileandrun->setEnabled(true);
+  ui->pushButton->setEnabled(false);
 } // writing to the filenam.cc ends
 else // Filename.cc couldn't open hence showing appropriate message.
   std::cout<<"File for writing the main code didn't open";
@@ -1099,6 +1068,7 @@ void MainWindow::on_pushButton_input_parameters_clicked()
        {
         QMessageBox::critical(this,"Error", "Dimension cant be zero or negative");
         flag_dim=1;
+        ui->pushButton_input_parameters->setEnabled(false);
         return;
        }
     // since dimension is a natural number saving it into variable Dim_ii.
@@ -1114,6 +1084,7 @@ void MainWindow::on_pushButton_input_parameters_clicked()
       {
         flag_dim=1;
         QMessageBox::critical(this,"Error", "input parameters do not match with the dimension");
+        ui->pushButton_input_parameters->setEnabled(false);
         return;
       }
     // Saving these elements in Qstring format to array types defined in Mainwindow class definition (i.e. eta_ii ,lb_ii ,ub_ii ) and Checking further elements of eta_ii , lb_ii and ub_ii for compatability.
@@ -1161,6 +1132,7 @@ void MainWindow::on_pushButton_input_parameters_clicked()
          flag_input_parameters=1;
          QMessageBox::critical(this,"Error", "please enter the parameters again");
          ui->textBrowser_status->setText("Please add the input parameters again");
+         ui->pushButton_input_parameters->setEnabled(false);
          return;
       }
   // At this point all sorts of checking terminates and the values are shown to the user in status bar + stored into the file for open model functionality.
@@ -1183,6 +1155,7 @@ void MainWindow::on_pushButton_input_parameters_clicked()
        else
         {
            QMessageBox::critical(this,"ALert","couldnt write input parameters into the file , so open model functionality may not work on this model.");
+           ui->pushButton_input_parameters->setEnabled(false);
            return;
         }
 
@@ -1220,6 +1193,8 @@ void MainWindow::on_pushButton_input_parameters_clicked()
     }
   }// end of if for new model.
 
+   ui->pushButton_input_parameters->setEnabled(false);
+
 }
 
 
@@ -1242,6 +1217,7 @@ void MainWindow::on_pushButton_state_parameters_clicked()
          {
           QMessageBox::critical(this,"Error", "Dimension cant be zero or negative");
           flag_dim=1;
+          ui->pushButton_state_parameters->setEnabled(false);
           return;
          }
 
@@ -1256,6 +1232,7 @@ void MainWindow::on_pushButton_state_parameters_clicked()
         {
           flag_dim=1;
           QMessageBox::critical(this,"Error", "state parameters do not match with the dimension");
+          ui->pushButton_state_parameters->setEnabled(false);
           return;
         }
 
@@ -1302,6 +1279,7 @@ void MainWindow::on_pushButton_state_parameters_clicked()
      {   flag_state_parameters=1;
          QMessageBox::critical(this,"Error", "Please enter the state parameters again");
          ui->textBrowser_status->setText("Please enter the state parameters again");
+         ui->pushButton_state_parameters->setEnabled(false);
          return;
       }
 
@@ -1355,6 +1333,7 @@ void MainWindow::on_pushButton_state_parameters_clicked()
           ui->new_model_stacked_widget->setCurrentIndex(3);
         }
    }// end of if for new model.
+   ui->pushButton_state_parameters->setEnabled(false);
 
 }//end of pushbutton ok state parameters.
 
@@ -1372,12 +1351,16 @@ void MainWindow::on_pushButton_sys_post_clicked()
 
     // saving system post parameters into text file for loading.
     std::string parameters_filename="/"+this->new_model->pathoffolder+"/sys_post.txt";
+    std::string tau_filename="/"+this->new_model->pathoffolder+"/tau.txt";
+    std::string step_filename="/"+this->new_model->pathoffolder+"/rungekutta.txt";
     QMessageBox::information(this,"Hello","System post entered successfully");
     std::ofstream file_sys_post(parameters_filename.c_str());
     if(file_sys_post.is_open())
     {
         file_sys_post<<sys_post.c_str();
         file_sys_post.close();
+        std::ofstream file_tau(tau_filename.c_str());
+        file_tau<<tau;
     }
     else
         QMessageBox::critical(this,"ALert","couldnt write system_post into the file");
@@ -1398,7 +1381,38 @@ void MainWindow::on_pushButton_sys_post_clicked()
         rungekutta_step=1;
         ui->lineEdit_runggekutta_step->setText("1");
     }
+    std::ofstream file_tau(tau_filename.c_str());
+    if(file_tau.is_open())
+       {
+        file_tau<<tau;
+        file_tau.close();
+       }
+    else
+        QMessageBox::critical(this,"ALert","couldnt write tau into the file");
+    std::ofstream file_step(step_filename.c_str());
+    if(file_step.is_open())
+       {
+        file_step<<rungekutta_step;
+        file_step.close();
+       }
+    else
+        QMessageBox::critical(this,"ALert","couldnt write runge-kutta step into the file");
+    int status=0;
+    if(ui->checkBox_sys_post->isChecked())
+    {
+        status=1;
+    }
+    std::string ODE_sys_filename="/"+this->new_model->pathoffolder+"/ODE_sys.txt";
+    std::ofstream file_status(ODE_sys_filename.c_str());
+    if(file_status.is_open())
+    {
+        file_status<<status;
+        file_status.close();
+    }
+
+     ui->pushButton_sys_post->setEnabled(false);
      ui->new_model_stacked_widget->setCurrentIndex(2);
+     ui->textBrowser_status->setText(" ");
 
 
 }
@@ -1415,6 +1429,7 @@ void MainWindow::on_pushButton_rad_post_clicked()
     else
         flag_rungge_kutta_rad=0;
     std::string parameters_filename="/"+this->new_model->pathoffolder+"/rad_post.txt";
+
         QMessageBox::information(this,"Hello","Radius post entered successfully");
     std::ofstream file_rad_post(parameters_filename.c_str());
     if(file_rad_post.is_open())
@@ -1424,6 +1439,19 @@ void MainWindow::on_pushButton_rad_post_clicked()
     }
     else
         QMessageBox::critical(this,"ALert","couldnt write radius_post into the file");
+    int status=0;
+    if(ui->checkBox_rad_post->isChecked())
+    {
+        status=1;
+    }
+    std::string ODE_rad_filename="/"+this->new_model->pathoffolder+"/ODE_rad.txt";
+    std::ofstream file_status(ODE_rad_filename.c_str());
+    if(file_status.is_open())
+    {
+        file_status<<status;
+        file_status.close();
+    }
+
     ui->new_model_stacked_widget->setCurrentIndex(11);
 }
 
@@ -1436,7 +1464,7 @@ void MainWindow:: on_actionOpen_Model_triggered()
     path=" ";
    // Opening a browse window and saving the path of file into the directory.
     path=(QFileDialog::getExistingDirectory(this,tr("Open Model"),"/home")).toStdString();
-    if(path==" ")
+    if(path.empty())
       {  QMessageBox::warning(this,"Warning","You didn't select any file");
          return;
       }
@@ -1478,6 +1506,17 @@ void MainWindow:: on_actionOpen_Model_triggered()
 void MainWindow::on_treeWidget_newmodel_clicked(const QModelIndex &index)
 {    ui->textBrowser_status->setText("");
      ui->new_model_stacked_widget->setCurrentIndex(5);
+     ui->pushButton_state_parameters->setEnabled(false);
+     ui->pushButton_input_parameters->setEnabled(false);
+     ui->pushButton_sys_post->setEnabled(false);
+     ui->pushButton_rad_post->setEnabled(false);
+     ui->pushButton_target_bounds->setEnabled(false);
+     ui->pushButton_safety->setEnabled(false);
+     ui->pushButton_avoid->setEnabled(false);
+     ui->pushButton->setEnabled(false);
+     ui->pushButton_compileandrun->setEnabled(false);
+
+
      if(index.parent().row()==-1)
            {
               if(index.row()==0)
@@ -1637,11 +1676,9 @@ void MainWindow::on_pushButton_compileandrun_clicked()
     if(system(command.c_str()))
         {
          QMessageBox::critical(this,"Compile and Run error","couldn't Make File");
-        // return;
+         ui->pushButton_compileandrun->setEnabled(false);
+         return;
         }
-//    command="cd /"+path+"; rm output.txt ; rm simulation.txt";
-//    system(command.c_str());
-
     std::string outputfile="/"+path+"/output.txt", content;
     // clearing the previous content of file.
     std::fstream file(outputfile.c_str(),std::ios::out|std::ios::trunc);
@@ -1680,7 +1717,7 @@ void MainWindow::on_pushButton_compileandrun_clicked()
         }
      }
 
-
+  ui->pushButton_compileandrun->setEnabled(false);
 }
 
 
@@ -1708,9 +1745,12 @@ void MainWindow::on_pushButton_avoid_clicked()
     }
     flag_avoid=2;// it mean avoid specification is added successfully.
     QMessageBox::information(this,"Hello","Parameters of avoid specification successfully entered");
+    ui->checkBox_add_avoid->setEnabled(true);
     }
     else
-        QMessageBox::critical(this, "Error","Add the state and input parameters first");
+       { QMessageBox::critical(this, "Error","Add the state and input parameters first");
+          ui->checkBox_add_avoid->setEnabled(false);
+       }
 }
 
 
@@ -1726,8 +1766,8 @@ void MainWindow::on_pushButton_target_bounds_clicked()
     int flag_lb_target=0;
     if(flag_state_parameters==2)
     {
-        int ll= lb.split(QRegExp("(\\s|\\n|\\r)+"), QString::SkipEmptyParts).count(); // number of elements in lb
-        int uu = ub.split(QRegExp("(\\s|\\n|\\r)+"), QString::SkipEmptyParts).count();// number of elements in ub
+        int ll= lb.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"), QString::SkipEmptyParts).count(); // number of elements in lb
+        int uu = ub.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"), QString::SkipEmptyParts).count();// number of elements in ub
         if(Dim_ss!=ll||Dim_ss!=uu)
           {
             flag_dim_target=1;
@@ -1736,12 +1776,12 @@ void MainWindow::on_pushButton_target_bounds_clicked()
         if(flag_dim_target!=1)
         {
 
-            QStringList list_lb= lb.split(QRegExp("(\\s|\\n|\\r)+"),QString::SkipEmptyParts);
+            QStringList list_lb= lb.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
             int i=0;
             foreach (lb, list_lb)
                     lb_target[i++]=lb.toDouble();
 
-            QStringList list_ub= ub.split(QRegExp("(\\s|\\n|\\r)+"),QString::SkipEmptyParts);
+            QStringList list_ub= ub.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
              i=0;
             foreach (ub, list_ub)
                     ub_target[i++]=ub.toDouble();
@@ -1762,16 +1802,20 @@ void MainWindow::on_pushButton_target_bounds_clicked()
         if(flag_dim_target==1&&flag_ub_target==1&&flag_lb_target==1)
         {   flag_target_lbub=1;
             QMessageBox::critical(this,"Error", "Please enter the lower bound and upper bound again");
+            ui->checkBox_add_target->setEnabled(false);
          }
         else
            {
             QMessageBox::information(this,"Hello","Parameters of target specification successfully entered");
             flag_target_lbub=2;
-
+            ui->checkBox_add_target->setEnabled(true);
         }
      }
     else
+    {
         QMessageBox::critical(this,"Error", "Please enter the state parameters first");
+        ui->checkBox_add_target->setEnabled(false);
+    }
 }
 
 
@@ -1787,8 +1831,8 @@ void MainWindow::on_pushButton_safety_clicked()
         int flag_lb_safety=0;
         if(flag_state_parameters==2)
         {
-            int ll= lb.split(QRegExp("(\\s|\\n|\\r)+"), QString::SkipEmptyParts).count(); // number of elements in lb
-            int uu = ub.split(QRegExp("(\\s|\\n|\\r)+"), QString::SkipEmptyParts).count();// number of elements in ub
+            int ll= lb.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"), QString::SkipEmptyParts).count(); // number of elements in lb
+            int uu = ub.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"), QString::SkipEmptyParts).count();// number of elements in ub
             if(Dim_ss!=ll||Dim_ss!=uu)
               {
                 flag_dim_safety=1;
@@ -1797,12 +1841,12 @@ void MainWindow::on_pushButton_safety_clicked()
             if(flag_dim_safety!=1)
             {
 
-                QStringList list_lb= lb.split(QRegExp("(\\s|\\n|\\r)+"),QString::SkipEmptyParts);
+                QStringList list_lb= lb.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
                 int i=0;
                 foreach (lb, list_lb)
                         lb_safety[i++]=lb.toDouble();
 
-                QStringList list_ub= ub.split(QRegExp("(\\s|\\n|\\r)+"),QString::SkipEmptyParts);
+                QStringList list_ub= ub.split(QRegExp("(\\s|\\n|\\r|\\,|\\:|\\;|\\[|\\])+"),QString::SkipEmptyParts);
                  i=0;
                 foreach (ub, list_ub)
                     ub_safety[i++]=ub.toDouble();
@@ -1824,16 +1868,19 @@ void MainWindow::on_pushButton_safety_clicked()
             if(flag_dim_safety==1&&flag_ub_safety==1&&flag_lb_safety==1)
             {   flag_safety=1; // lb and ub are not correct.
                 QMessageBox::critical(this,"Error", "Please enter the lower bound and upper bound again");
+                ui->checkBox_add_safety->setEnabled(false);
              }
             else
                { flag_safety=2;//parameters added are fine.
                  QMessageBox::information(this,"Hello","Parameters of safety specification successfully entered");
+                 ui->checkBox_add_safety->setEnabled(true);
 
             }
          }
         else
-            QMessageBox::critical(this,"Error", "Please enter the state parameters first");
-
+           { QMessageBox::critical(this,"Error", "Please enter the state parameters first");
+             ui->checkBox_add_safety->setEnabled(false);
+           }
 
     }
 
@@ -1847,6 +1894,11 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
         {
             path=this->new_model->pathoffolder;
         }
+        //deactivating all checkboxes in generate code for specification.
+        ui->checkBox_add_target->setEnabled(false);
+        ui->checkBox_add_safety->setEnabled(false);
+        ui->checkBox_add_avoid->setEnabled(false);
+
 
 
          newfilename=this->new_model->newfilename_1;
@@ -1875,11 +1927,13 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
         flag_rungge_kutta_sys=0;
         flag_sys_post=0;
         ui->textEdit_sys_post->setText(" ");
+        ui->checkBox_sys_post->setChecked(0);
 
         //Initializing Radius Post Widget for new model.
         flag_rungge_kutta_rad=0;
         flag_rad_post=0;
         ui->textEdit_rad_post->setText(" ");
+        ui->checkBox_rad_post->setChecked(0);
 
         //Initializing Avoid widget for new model
          flag_add_avoid=0;
@@ -1906,6 +1960,9 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
     //condition for open model functionality.
     if(this->new_model->flag_filename_entered==1)
        {
+        ui->new_model_stacked_widget->hide();
+        ui->treeWidget_newmodel->hide();
+        ui->textBrowser_status->hide();
         std::string temp="/"+this->new_model->pathoffolder+"/state_param.txt";
         std::ifstream file_state(temp.c_str());
         if(file_state.is_open())
@@ -1934,6 +1991,7 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
             ui->lineEdit_ub_ss->setText(ub);
             ui->lineEdit_lb_ss->setText(lb);
             file_state.close();
+            on_pushButton_state_parameters_clicked();
             ui->textBrowser_status->setText("state parameters added successfully");
         }
         else
@@ -1968,6 +2026,7 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
             ui->lineEdit_lb_ii->setText(lb);
             file_input.close();
             ui->textBrowser_status->append("input parameters added successfully");
+            on_pushButton_input_parameters_clicked();
         }
         else
             ui->textBrowser_status->append("Couldn't add input parameters.");
@@ -1985,9 +2044,30 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
             ui->textEdit_rad_post->setText(rad_post);
             file_rad.close();
             ui->textBrowser_status->append("Radius post added successfully ");
+
         }
         else
             ui->textBrowser_status->append("couldn't add radius post ");
+
+        temp="/"+this->new_model->pathoffolder+"/ODE_rad.txt";
+         std::ifstream file_ODE_rad(temp.c_str());
+        if(file_ODE_rad.is_open())
+        {   QString rad_ODE;
+
+            std::string post;
+            while(std::getline(file_ODE_rad,post))
+            {
+               rad_ODE=rad_ODE.append("\n"+QString::fromStdString(post));
+            }
+            int k =rad_ODE.toInt();
+            if(k==1)
+                ui->checkBox_rad_post->setChecked(1);
+            else
+                ui->checkBox_rad_post->setChecked(0);
+            file_ODE_rad.close();
+          }
+
+       on_pushButton_rad_post_clicked();
 
       //Adding System post
         temp="/"+this->new_model->pathoffolder+"/sys_post.txt";
@@ -2007,11 +2087,68 @@ void MainWindow::on_pushButton_2_clicked() // Pushbutton: "Click here" introduce
         else
             ui->textBrowser_status->append("Couldn't add system post ");
 
+        temp="/"+this->new_model->pathoffolder+"/tau.txt";
+         std::ifstream file_tau(temp.c_str());
+        if(file_tau.is_open())
+        {   QString sys_tau;
+
+            std::string post;
+            while(std::getline(file_tau,post))
+            {
+               sys_tau=sys_tau.append("\n"+QString::fromStdString(post));
+            }
+            ui->lineEdit_tau->setText(sys_tau);
+            file_tau.close();
+            ui->textBrowser_status->append("Sampling time added successfully ");
+        }
+        else
+            ui->textBrowser_status->append("Couldn't add sampling time ");
+
+        temp="/"+this->new_model->pathoffolder+"/rungekutta.txt";
+         std::ifstream file_runge(temp.c_str());
+        if(file_runge.is_open())
+        {   QString step;
+
+            std::string post;
+            while(std::getline(file_runge,post))
+            {
+               step=step.append("\n"+QString::fromStdString(post));
+            }
+            ui->lineEdit_runggekutta_step->setText(step);
+            file_runge.close();
+            ui->textBrowser_status->append("Runge_kutta step added successfully ");
+        }
+        else
+            ui->textBrowser_status->append("Couldn't add Runge-Kutta step");
+
+
+        temp="/"+this->new_model->pathoffolder+"/ODE_sys.txt";
+         std::ifstream file_ODE_sys(temp.c_str());
+        if(file_ODE_sys.is_open())
+        {   QString sys_ODE;
+
+            std::string post;
+            while(std::getline(file_ODE_sys,post))
+            {
+               sys_ODE=sys_ODE.append("\n"+QString::fromStdString(post));
+            }
+            int k =sys_ODE.toInt();
+            if(k==1)
+                ui->checkBox_sys_post->setChecked(1);
+            else
+                ui->checkBox_sys_post->setChecked(0);
+            file_ODE_sys.close();
+          }
+         on_pushButton_sys_post_clicked();
+
+         ui->new_model_stacked_widget->show();
+         ui->treeWidget_newmodel->show();
+         ui->textBrowser_status->show();
+         ui->new_model_stacked_widget->setCurrentIndex(6);
+
     }
     if(this->new_model->flag_filename_entered==0)
        QMessageBox::critical(this,"Sorry","It seems you forgot to add the filename, please add the file name again by clicking on new model up in the menu bar");
-
-
 
 }
 
@@ -2036,3 +2173,215 @@ void MainWindow::on_actionAbout_triggered()
     new_model->show();
 
 }
+
+// Controls for the buttons on the front page with icons new and open.
+//begin
+void MainWindow::on_pushButton_new_model_clicked()  // for pushbutton: New Project
+{
+    on_actionNew_Model_triggered(); // since functionality of New model is same as iconed pushbutton calling the previous function.
+}
+
+void MainWindow::on_pushButton_open_model_clicked()  // for pushbutton: Open Project
+{
+    on_actionOpen_Model_triggered();  // since functionality of open model is same as iconed pushbutton calling the previous function.
+}
+
+void MainWindow::on_pushButton_exit_clicked()
+{
+    exit(1);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    on_actionAbout_triggered();
+}
+
+//end
+
+
+// Activating and deactivating pushbuttons once editted for stack widget input parameters.
+// begin
+void MainWindow::on_spinBox_dim_ii_editingFinished()
+{
+    ui->pushButton_input_parameters->setEnabled(true);
+}
+
+void MainWindow::on_lineEdit_eta_ii_editingFinished()
+{
+     ui->pushButton_input_parameters->setEnabled(true);
+}
+
+void MainWindow::on_lineEdit_lb_ii_editingFinished()
+{
+     ui->pushButton_input_parameters->setEnabled(true);
+}
+
+
+void MainWindow::on_lineEdit_ub_ii_editingFinished()
+{
+     ui->pushButton_input_parameters->setEnabled(true);
+}
+//end.
+
+// Activating and deactivating pushbuttons once editted for stack widget state parameters.
+// begin
+void MainWindow::on_spinBox_dim_ss_editingFinished()
+{
+    ui->pushButton_state_parameters->setEnabled(true);
+}
+
+
+
+void MainWindow::on_lineEdit_eta_ss_editingFinished()
+{
+     ui->pushButton_state_parameters->setEnabled(true);
+}
+
+
+void MainWindow::on_lineEdit_lb_ss_editingFinished()
+{
+     ui->pushButton_state_parameters->setEnabled(true);
+}
+
+
+
+void MainWindow::on_lineEdit_ub_ss_editingFinished()
+{
+     ui->pushButton_state_parameters->setEnabled(true);
+}
+//end
+
+
+// Activating and deactivating pushbuttons once editted for stack widget system dyanmics
+// begin
+
+void MainWindow::on_lineEdit_tau_editingFinished()
+{
+     ui->pushButton_sys_post->setEnabled(true);
+}
+
+void MainWindow::on_lineEdit_runggekutta_step_editingFinished()
+{
+     ui->pushButton_sys_post->setEnabled(true);
+}
+
+
+void MainWindow::on_textEdit_sys_post_textChanged()
+{
+     ui->pushButton_sys_post->setEnabled(true);
+}
+
+
+void MainWindow::on_checkBox_sys_post_stateChanged(int arg1)
+{
+     ui->pushButton_sys_post->setEnabled(true);
+}
+
+//End
+
+
+// Activating and deactivating pushbuttons once editted for stack widget Radius post
+// begin
+
+void MainWindow::on_textEdit_rad_post_textChanged()
+{
+    ui->pushButton_rad_post->setEnabled(false);
+}
+
+void MainWindow::on_checkBox_rad_post_stateChanged(int arg1)
+{
+    ui->pushButton_rad_post->setEnabled(true);
+}
+//End
+
+// Activating and deactivating pushbuttons once editted for stack widget Reachability
+// begin
+
+void MainWindow::on_lineEdit_target_lb_editingFinished()
+{
+   ui->pushButton_target_bounds->setEnabled(true);
+}
+
+
+void MainWindow::on_lineEdit_target_ub_editingFinished()
+{
+   ui->pushButton_target_bounds->setEnabled(true);
+}
+
+//End
+
+// Activating and deactivating pushbuttons once editted for stack widget safety
+// begin
+
+void MainWindow::on_lineEdit_safety_lb_editingFinished()
+{
+    ui->pushButton_safety->setEnabled(true);
+}
+
+
+void MainWindow::on_lineEdit_safety_ub_editingFinished()
+{
+    ui->pushButton_safety->setEnabled(false);
+
+}
+
+//end
+
+// Activating and deactivating pushbuttons once editted for stack widget Avoid
+// begin
+
+
+void MainWindow::on_textEdit_avoid_textChanged()
+{
+    ui->pushButton_avoid->setEnabled(true);
+}
+
+//end
+
+
+// Activating and deactivating checkboxes in generate code satck widget
+// begin
+void MainWindow::on_checkBox_add_safety_stateChanged(int arg1)
+{
+    if(ui->checkBox_add_safety->isChecked())
+    {
+        ui->checkBox_add_target->setEnabled(false);
+        ui->checkBox_add_simulation->setEnabled(true);
+    }
+    else if(flag_safety==2)
+    {
+        ui->checkBox_add_target->setEnabled(true);
+        ui->checkBox_add_simulation->setEnabled(false);
+
+    }
+
+}
+
+void MainWindow::on_checkBox_add_target_stateChanged(int arg1)
+{
+    if(ui->checkBox_add_target->isChecked())
+    {
+        ui->checkBox_add_safety->setEnabled(false);
+    }
+    else if(flag_target_lbub==2)
+       {
+         ui->checkBox_add_simulation->setEnabled(false);
+         ui->checkBox_add_safety->setEnabled(true);
+       }
+
+}
+
+void MainWindow::on_radioButton_BDD_clicked()
+{
+    ui->pushButton_compileandrun->setEnabled(true);
+}
+
+
+void MainWindow::on_radioButton_sparse_clicked()
+{
+   ui->pushButton_compileandrun->setEnabled(true);
+}
+//end
+
+
+

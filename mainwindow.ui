@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>870</width>
-    <height>790</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,23 +19,28 @@
   <property name="minimumSize">
    <size>
     <width>870</width>
-    <height>790</height>
+    <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>870</width>
-    <height>790</height>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/Res/SCOTS_GUI.png</normaloff>:/Res/SCOTS_GUI.png</iconset>
+  </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
   <property name="styleSheet">
-   <string notr="true">background : url(:/Res/background_gui.jpg)</string>
+   <string notr="true">
+background-image: url(:/Res/background_gui.jpg);</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -44,10 +49,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>860</width>
-      <height>702</height>
+      <x>0</x>
+      <y>0</y>
+      <width>871</width>
+      <height>731</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -74,7 +79,8 @@
           <bool>true</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">QTreeWidget::item:pressed,QTreeWidget::item:selected{backgro‌​und-color:#FFF000;}</string>
+          <string notr="true">color: rgb(239, 41, 41);
+color: rgb(0, 0, 0);</string>
          </property>
          <column>
           <property name="text">
@@ -149,7 +155,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="currentIndex">
-          <number>8</number>
+          <number>12</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -299,7 +305,7 @@
                <item>
                 <widget class="QPushButton" name="pushButton_input_parameters">
                  <property name="text">
-                  <string>ok</string>
+                  <string>Apply</string>
                  </property>
                 </widget>
                </item>
@@ -477,7 +483,7 @@
                <item>
                 <widget class="QPushButton" name="pushButton_state_parameters">
                  <property name="text">
-                  <string>ok</string>
+                  <string>Apply</string>
                  </property>
                 </widget>
                </item>
@@ -645,7 +651,7 @@ p, li { white-space: pre-wrap; }
                  <item>
                   <widget class="QPushButton" name="pushButton_rad_post">
                    <property name="text">
-                    <string>ok</string>
+                    <string>Apply</string>
                    </property>
                   </widget>
                  </item>
@@ -871,7 +877,7 @@ p, li { white-space: pre-wrap; }
                  <item>
                   <widget class="QPushButton" name="pushButton_sys_post">
                    <property name="text">
-                    <string>ok</string>
+                    <string>Apply</string>
                    </property>
                   </widget>
                  </item>
@@ -1039,7 +1045,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QPushButton" name="pushButton_target_bounds">
                <property name="text">
-                <string>ok</string>
+                <string>Apply</string>
                </property>
               </widget>
              </item>
@@ -1255,7 +1261,7 @@ p, li { white-space: pre-wrap; }
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>ok</string>
+                  <string>Apply</string>
                  </property>
                 </widget>
                </item>
@@ -1442,8 +1448,14 @@ p, li { white-space: pre-wrap; }
           <layout class="QVBoxLayout" name="verticalLayout_23">
            <item>
             <widget class="QLabel" name="label_10">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>300</height>
+              </size>
+             </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Welcome to the &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;SCOTS&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-style:italic;&quot;&gt;Graphic User Interface&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Welcome to the &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;SCOTS&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/Res/SCOTS_GUI.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1544,7 +1556,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Select the actions you want to take in &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;the window to the left.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/Res/SCOTS_GUI.png&quot;/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Select the actions you want to take in &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;the window to the left.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1704,9 +1716,185 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Now choose the &lt;/span&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#2e3436;&quot;&gt;specification&lt;/span&gt;&lt;span style=&quot; font-size:20pt;&quot;/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;you want to add&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/Res/SCOTS_GUI.png&quot;/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Now choose the &lt;/span&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#2e3436;&quot;&gt;specification&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;you want to add&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_13">
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_16">
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>300</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/Res/SCOTS_GUI.png);</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_17">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>300</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:26pt;&quot;&gt;Welcome to SCOTS &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="pushButton_new_model">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/Res/new.png);</string>
+               </property>
+               <property name="text">
+                <string>
+
+
+
+
+
+
+
+ Create new  project</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="pushButton_open_model">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/Res/open.png);</string>
+               </property>
+               <property name="text">
+                <string>
+
+
+
+
+
+
+
+Open Project</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/Res/about.png);</string>
+               </property>
+               <property name="text">
+                <string>
+
+
+
+
+
+
+
+About</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QPushButton" name="pushButton_exit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">image: url(:/Res/exit.png);</string>
+               </property>
+               <property name="text">
+                <string>
+
+
+
+
+
+
+
+Exit</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -1724,7 +1912,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="maximumSize">
         <size>
-         <width>850</width>
+         <width>870</width>
          <height>16777215</height>
         </size>
        </property>
@@ -1736,10 +1924,10 @@ p, li { white-space: pre-wrap; }
 selection-background-color: rgb(252, 233, 79);</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Panel</enum>
+        <enum>QFrame::Box</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Raised</enum>
        </property>
       </widget>
      </item>
@@ -1775,8 +1963,6 @@ selection-background-color: rgb(252, 233, 79);</string>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew_Model"/>
-   <addaction name="actionOpen_Model"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Model">
@@ -1811,6 +1997,8 @@ selection-background-color: rgb(252, 233, 79);</string>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
