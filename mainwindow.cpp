@@ -629,7 +629,7 @@ void MainWindow::bddcode()
   else // Filename.cc couldn't open hence showing appropriate message.
     std::cout<<"File for writing the main code didn't open";
 
-
+  ui->pushButton_compileandrun->setEnabled(true);
 }
 
 //Pushbutton for generating the code under Generate code widget Name of pushbutton: " Generate code ".
@@ -695,20 +695,12 @@ void MainWindow::on_pushButton_clicked()
     if(ui->radioButton_BDD->isChecked())
     {
         bddcode();
+        ui->pushButton->setEnabled(false);
         return;
     }
 
-      /*std::ifstream file1 ("newfilename.txt");
-        if(file1.is_open())
-              {
-               std::getline(file1,newfilename);
-               file1.close();
-              }
-        else
-            QMessageBox::critical(this,"Error", "Couldnt get name of model");
-       */
 
-     // Saving name of file into variable of class Mainwindow , newfilename from class newfilename_1 and adjusting it for writing into simulate.cc and newfile.cc.
+
      newfilename=this->new_model->newfilename_1;
 
      std::string filename;
@@ -723,14 +715,6 @@ void MainWindow::on_pushButton_clicked()
    filename= filename.append(newfilename);
    filename=filename.append(".cc");
    filename="/"+filename;
-
-   // filename_simulate = /home/fmalb5/newfilename/simulate.cc   ------xxxxxx
-   // filename = /home/fmlab5/newfilename/newfilename.cc              ----xxxxxx
-
-
-
-   /*QString treename=QString::fromStdString(newfilename);                     ---XXXXXXX
-   ui->treeWidget_newmodel->setHeaderLabel(treename);*/
 
 
    std::ofstream file(filename.c_str()); // file is the write type stream for writing into the newfilenmae.cc
@@ -900,7 +884,7 @@ void MainWindow::on_pushButton_clicked()
       file<<ub_ss[i]<<"}};\n";
      }
    file<<"  scots::UniformGrid ss(state_dim,lb_ss,ub_ss,eta_ss);"<<std::endl
-       <<"  std::cout << \"Unfiorm grid details:\" << std::endl;"<<std::endl
+       <<"  std::cout << \"Grid details of state space :\" << std::endl;"<<std::endl
        <<"  ss.print_info();"<<std::endl;
    file<<"\n  input_type eta_ii={{";
      for(int i=0;i<Dim_ii;i++)
@@ -924,7 +908,7 @@ void MainWindow::on_pushButton_clicked()
     file<<ub_ii[i]<<"}};\n";
     }
   file<<"  scots::UniformGrid ii(input_dim,lb_ii,ub_ii,eta_ii);"<<std::endl
-      <<"  std::cout << \"Unfiorm grid details:\" << std::endl;"<<std::endl
+      <<"  std::cout << \" Grid details of input space:\" << std::endl;"<<std::endl
       <<"  ii.print_info();\n\n"<<std::endl;
 
   file<<"  scots::TransitionFunction tf;"<<std::endl
@@ -977,7 +961,8 @@ void MainWindow::on_pushButton_clicked()
 
        }
   else
-    file<<"abs.compute_gb(tf,sys_post, rad_post);";
+    file<<"abs.compute_gb(tf,sys_post, rad_post);"<<std::endl;
+    file<<"std::cout<<\" Number of elements in transition relation :  \"<<tf.get_no_transitions()<<std::endl;";
 
   if(flag_target_lbub==2&&flag_add_target==2)  // adding reachability specification.--------------------
   {
@@ -998,14 +983,14 @@ void MainWindow::on_pushButton_clicked()
           <<"      return false;"<<std::endl;
       file<<"};"<<std::endl;
       file<<" write_to_file(ss,target,\"target\");"<<std::endl
-          <<" std::cout << \"  Synthesis: \";"<<std::endl
+          <<" std::cout << \" Controller  Synthesis  \"<<std::endl;"<<std::endl
           <<" tt.tic();"<<std::endl
           <<" scots::WinningDomain win = scots::solve_reachability_game(tf,target);"<<std::endl
-          <<" tt.toc();"<<std::endl
+          <<"\n tt.toc();"<<std::endl
           <<" std::cout << \"Winning domain size: \" << win.get_size() << std::endl;"<<std::endl;
-      file<<" std::cout << \"Write controller to controller.scs \";"<<std::endl
+      file<<" std::cout << \"Your controller is written to controller.scs \";"<<std::endl
           <<" if(write_to_file(scots::StaticController(ss,ii,std::move(win)),\"controller\"))"<<std::endl
-          <<"std::cout << \"Done.\";"<<std::endl
+          <<"std::cout << \".....\";"<<std::endl
           <<"return 1;"<<std::endl;
    }
   else if(flag_safety==2&&flag_add_safety==2) // adding safety configuration.
@@ -1026,14 +1011,14 @@ void MainWindow::on_pushButton_clicked()
             <<"      return false;"<<std::endl;
         file<<"};"<<std::endl;
         file<<" write_to_file(ss,safeset,\"safeset\");"<<std::endl
-            <<" std::cout << \"  Synthesis: \";"<<std::endl
+            <<" std::cout << \" Controller Synthesis: \"<<std::endl;"<<std::endl
             <<" tt.tic();"<<std::endl
             <<" scots::WinningDomain win = scots::solve_invariance_game(tf,safeset);"<<std::endl
             <<" tt.toc();"<<std::endl
             <<" std::cout << \"Winning domain size: \" << win.get_size() << std::endl;"<<std::endl;
-        file<<" std::cout << \"Write controller to controller.scs \";"<<std::endl
+        file<<" std::cout << \"Your controller is saved in controller.scs \";"<<std::endl
             <<" if(write_to_file(scots::StaticController(ss,ii,std::move(win)),\"controller\"))"<<std::endl
-            <<"std::cout << \"Done.\";"<<std::endl
+            <<"std::cout << \" ....\";"<<std::endl
             <<"return 1;"<<std::endl;
       }
   file<<"}";
@@ -1746,10 +1731,12 @@ void MainWindow::on_pushButton_avoid_clicked()
     flag_avoid=2;// it mean avoid specification is added successfully.
     QMessageBox::information(this,"Hello","Parameters of avoid specification successfully entered");
     ui->checkBox_add_avoid->setEnabled(true);
+    ui->pushButton_avoid->setEnabled(false);
     }
     else
        { QMessageBox::critical(this, "Error","Add the state and input parameters first");
           ui->checkBox_add_avoid->setEnabled(false);
+          ui->pushButton_avoid->setEnabled(false);
        }
 }
 
@@ -1803,18 +1790,21 @@ void MainWindow::on_pushButton_target_bounds_clicked()
         {   flag_target_lbub=1;
             QMessageBox::critical(this,"Error", "Please enter the lower bound and upper bound again");
             ui->checkBox_add_target->setEnabled(false);
+            ui->pushButton_target_bounds->setEnabled(false);
          }
         else
            {
             QMessageBox::information(this,"Hello","Parameters of target specification successfully entered");
             flag_target_lbub=2;
             ui->checkBox_add_target->setEnabled(true);
+            ui->pushButton_target_bounds->setEnabled(false);
         }
      }
     else
     {
         QMessageBox::critical(this,"Error", "Please enter the state parameters first");
         ui->checkBox_add_target->setEnabled(false);
+        ui->pushButton_target_bounds->setEnabled(false);
     }
 }
 
@@ -1869,17 +1859,20 @@ void MainWindow::on_pushButton_safety_clicked()
             {   flag_safety=1; // lb and ub are not correct.
                 QMessageBox::critical(this,"Error", "Please enter the lower bound and upper bound again");
                 ui->checkBox_add_safety->setEnabled(false);
+                ui->pushButton_safety->setEnabled(false);
              }
             else
                { flag_safety=2;//parameters added are fine.
                  QMessageBox::information(this,"Hello","Parameters of safety specification successfully entered");
                  ui->checkBox_add_safety->setEnabled(true);
+                 ui->pushButton_safety->setEnabled(false);
 
             }
          }
         else
            { QMessageBox::critical(this,"Error", "Please enter the state parameters first");
              ui->checkBox_add_safety->setEnabled(false);
+             ui->pushButton_safety->setEnabled(false);
            }
 
     }
@@ -2285,7 +2278,7 @@ void MainWindow::on_checkBox_sys_post_stateChanged(int arg1)
 
 void MainWindow::on_textEdit_rad_post_textChanged()
 {
-    ui->pushButton_rad_post->setEnabled(false);
+    ui->pushButton_rad_post->setEnabled(true);
 }
 
 void MainWindow::on_checkBox_rad_post_stateChanged(int arg1)
@@ -2321,7 +2314,7 @@ void MainWindow::on_lineEdit_safety_lb_editingFinished()
 
 void MainWindow::on_lineEdit_safety_ub_editingFinished()
 {
-    ui->pushButton_safety->setEnabled(false);
+    ui->pushButton_safety->setEnabled(true);
 
 }
 
@@ -2373,13 +2366,13 @@ void MainWindow::on_checkBox_add_target_stateChanged(int arg1)
 
 void MainWindow::on_radioButton_BDD_clicked()
 {
-    ui->pushButton_compileandrun->setEnabled(true);
+    ui->pushButton->setEnabled(true);
 }
 
 
 void MainWindow::on_radioButton_sparse_clicked()
 {
-   ui->pushButton_compileandrun->setEnabled(true);
+   ui->pushButton->setEnabled(true);
 }
 //end
 

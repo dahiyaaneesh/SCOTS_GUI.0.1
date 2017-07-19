@@ -17,7 +17,7 @@ New_Model_dialog::New_Model_dialog(QWidget *parent) :
     ui(new Ui::New_Model_dialog)
 {
     ui->setupUi(this);
-    this->setWindowTitle("New Model");
+    this->setWindowTitle("New Project");
    /* QPixmap bkgnd("/home/fmlab5/blue.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
@@ -98,7 +98,20 @@ void New_Model_dialog::select_stacked_widget(int i)
     if(i==1)
         this->setWindowTitle("Open Model");
     if(i==0)
-        this->setWindowTitle("New Model");
+    {
+        this->setWindowTitle("New Project");
+        this->setMinimumHeight(70);
+        this->setMinimumWidth(436);
+        this->setMaximumHeight(70);
+        this->setMaximumWidth(436);
+
+    }
     if(i==2)
+    {
         this->setWindowTitle("ABOUT");
+        this->setMinimumHeight(500);
+        this->setMinimumWidth(436);
+        this->setMaximumHeight(800);
+        this->setMaximumWidth(500);
+    }
 }
